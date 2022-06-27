@@ -40,7 +40,6 @@ public class Player : NetworkBehaviour
     {
         HandleMovement();
 
-        //if (!hasAuthority) { return; }
         if (!isLocalPlayer) { return; }
 
         Vector2 gundDirection = (crosshairScript.mousePosition - transform.position).normalized;
