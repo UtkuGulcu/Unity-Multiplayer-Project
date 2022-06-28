@@ -58,9 +58,22 @@ public class Player : NetworkBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            GameObject newBullet = NetworkBehaviour.Instantiate(bullet, muzzle.transform.position, Quaternion.identity);
-            newBullet.GetComponent<Bullet>().direction = gundDirection;
+            CmdSpawnBullet(gundDirection, netId);
         }
+    }
+
+    [Command]
+    private void CmdSpawnBullet(Vector2 gundDirection, uint shooterID)
+    {
+        SpawnBulletRPC(gundDirection, shooterID);
+    }
+
+    [ClientRpc]
+    private void SpawnBulletRPC(Vector2 gundDirection, uint shooterID)
+    {
+        GameObject newBullet = Instantiate(bullet, muzzle.transform.position, Quaternion.identity);
+        newBullet.GetComponent<Bullet>().direction = gundDirection;
+        newBullet.GetComponent<Bullet>().shooterNetID = shooterID;
     }
 
     private void HandleMovement()
